@@ -10,4 +10,4 @@ def data_dir():
 
 def first_date():
     """The first date for which to download and integrate BigQuery data"""
-    return datetime.date(2017, 7, 1)
+    return datetime.date(2017, 1, 1)

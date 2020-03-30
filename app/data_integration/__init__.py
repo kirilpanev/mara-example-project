@@ -18,24 +18,19 @@ patch(data_integration.config.default_db_alias)(lambda: 'dwh')
 @patch(data_integration.config.root_pipeline)
 @functools.lru_cache(maxsize=None)
 def root_pipeline():
-    import app.data_integration.pipelines.github
-    import app.data_integration.pipelines.pypi
+    import app.data_integration.pipelines.load_data.load_ecommerce_data
     import app.data_integration.pipelines.utils
-    import app.data_integration.pipelines.python_projects
 
     pipeline = Pipeline(
-        id='mara_example_project',
-        description='An example pipeline that integrates PyPI download stats with the Github activity of a project')
+        id='mara_example_project_olist',
+        description='An example pipeline that integrates the Olist ecommerce and marketing funnel datasets')
 
     pipeline.add(app.data_integration.pipelines.utils.pipeline)
-    pipeline.add(app.data_integration.pipelines.pypi.pipeline, upstreams=['utils'])
-    pipeline.add(app.data_integration.pipelines.github.pipeline, upstreams=['utils'])
-    pipeline.add(app.data_integration.pipelines.python_projects.pipeline,
-                 upstreams=['pypi', 'github'])
+    pipeline.add(app.data_integration.pipelines.load_data.load_ecommerce_data.pipeline, upstreams=['utils'])
     return pipeline
 
 
 patch(etl_tools.config.number_of_chunks)(lambda: 11)
 patch(etl_tools.config.first_date_in_time_dimensions)(lambda: app.config.first_date())
 patch(etl_tools.config.last_date_in_time_dimensions)(
-    lambda: datetime.datetime.utcnow().date() - datetime.timedelta(days=1))
+    lambda: datetime.datetime.utcnow().date() - datetime.timedelta(days=3))

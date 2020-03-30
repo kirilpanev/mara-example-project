@@ -11,3 +11,5 @@
 /.vscode
 /.project
 .DS_Store
+mara-example-project.iml
+.gitignore
