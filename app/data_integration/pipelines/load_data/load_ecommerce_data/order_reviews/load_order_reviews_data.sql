@@ -6,3 +6,4 @@ SELECT review_id,
        review_creation_date,
        review_answer_timestamp
 FROM ecommerce.order_reviews
+WHERE review_creation_date >= to_date('@@first-date@@', 'YYYY-MM-DD')
