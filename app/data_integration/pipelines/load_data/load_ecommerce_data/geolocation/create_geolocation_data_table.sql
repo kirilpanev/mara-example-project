@@ -3,9 +3,9 @@
 DROP TABLE IF EXISTS ec_data.geolocation CASCADE;
 CREATE TABLE ec_data.geolocation
 (
-    geolocation_zip_code_prefix TEXT,             --first 5 digits of zip code
-    geolocation_lat             DOUBLE PRECISION, --latitude
-    geolocation_lng             DOUBLE PRECISION, --longitude
-    geolocation_city            TEXT,             --city name
-    geolocation_state           TEXT              --state
+    zip_code_prefix TEXT,             --first 5 digits of zip code
+    latitude        DOUBLE PRECISION, --latitude
+    longitude       DOUBLE PRECISION, --longitude
+    city            TEXT,             --city name
+    state           TEXT              --state
 );

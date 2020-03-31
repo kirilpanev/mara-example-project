@@ -6,9 +6,9 @@ CREATE TABLE ec_data.products
     product_category_name TEXT,    --root category of product, in Portuguese.
     product_name_length   INTEGER, --number of characters extracted from the product name.
     description_length    INTEGER, --number of characters extracted from the product description.
-    product_photos_qty    INTEGER, --number of product published photos
-    product_weight_g      INTEGER, --product weight measured in grams.
-    product_lenght_cm     INTEGER, --product length measured in centimeters.
-    product_height_cm     INTEGER, --product height measured in centimeters.
-    product_width_cm      INTEGER  --product width measured in centimeters.
+    photos_quantity       INTEGER, --number of product published photos
+    weight_g              INTEGER, --product weight measured in grams.
+    length_cm             INTEGER, --product length measured in centimeters.
+    height_cm             INTEGER, --product height measured in centimeters.
+    width_cm              INTEGER  --product width measured in centimeters.
 );

@@ -19,6 +19,7 @@ patch(data_integration.config.default_db_alias)(lambda: 'dwh')
 @functools.lru_cache(maxsize=None)
 def root_pipeline():
     import app.data_integration.pipelines.load_data.load_ecommerce_data
+    import app.data_integration.pipelines.load_data.load_marketing_data
     import app.data_integration.pipelines.utils
 
     pipeline = Pipeline(
@@ -27,6 +28,7 @@ def root_pipeline():
 
     pipeline.add(app.data_integration.pipelines.utils.pipeline)
     pipeline.add(app.data_integration.pipelines.load_data.load_ecommerce_data.pipeline, upstreams=['utils'])
+    pipeline.add(app.data_integration.pipelines.load_data.load_marketing_data.pipeline, upstreams=['utils'])
     return pipeline
 
 
