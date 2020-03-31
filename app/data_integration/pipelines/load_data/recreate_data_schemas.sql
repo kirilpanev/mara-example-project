@@ -1,7 +1,7 @@
-DROP SCHEMA IF EXISTS e_data CASCADE;
-CREATE SCHEMA e_data;
+DROP SCHEMA IF EXISTS ec_data CASCADE;
+CREATE SCHEMA ec_data;
 
-SELECT util.create_chunking_functions('e_data');
+SELECT util.create_chunking_functions('ec_data');
 
 DROP SCHEMA IF EXISTS m_data CASCADE;
 CREATE SCHEMA m_data;
