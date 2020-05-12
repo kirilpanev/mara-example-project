@@ -6,9 +6,9 @@
 DROP TABLE IF EXISTS ec_data.customers CASCADE;
 CREATE TABLE ec_data.customers
 (
-    customer_id              TEXT, --key to the orders table. Each order has a unique customer_id.
-    customer_unique_id       TEXT, --unique identifier of a customer.
-    zip_code_prefix TEXT, --first five digits of customer zip code
-    city            TEXT, --customer city name
-    state           TEXT  --customer state
+  customer_id        TEXT, --key to the orders table. Each order has a unique customer_id.
+  customer_unique_id TEXT, --unique identifier of a customer.
+  zip_code_prefix    TEXT, --first five digits of customer zip code
+  city               TEXT, --customer city name
+  state              TEXT  --customer state
 );

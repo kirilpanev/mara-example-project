@@ -12,9 +12,11 @@ import app.config
 @patch(mara_db.config.databases)
 def databases():
     return {
-        # the project requires two databases: 'mara' for the app itself, and 'dwh' for the etl
-        'dwh': mara_db.dbs.PostgreSQLDB(user='root', host='localhost', database='example_project_dwh'),
-        'mara': mara_db.dbs.PostgreSQLDB(user='root', host='localhost', database='example_project_mara')
+        # the project requires three databases: 'mara' for the app itself, 'dwh' for the etl
+        # and 'olist' for the source data
+        'dwh': mara_db.dbs.PostgreSQLDB(user='root', host='localhost', database='example_project_1_dwh'),
+        'mara': mara_db.dbs.PostgreSQLDB(user='root', host='localhost', database='example_project_1_mara'),
+        'olist': mara_db.dbs.PostgreSQLDB(user='root', host='localhost', database='olist_ecommerce')
     }
 
 # Disable http header based authentication

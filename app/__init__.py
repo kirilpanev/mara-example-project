@@ -5,7 +5,6 @@ import sys
 
 # configure application and packages
 import app.data_integration
-import app.bigquery_downloader
 import app.data_sets
 import app.ui
 

@@ -18,17 +18,19 @@ patch(data_integration.config.default_db_alias)(lambda: 'dwh')
 @patch(data_integration.config.root_pipeline)
 @functools.lru_cache(maxsize=None)
 def root_pipeline():
+    import app.data_integration.pipelines.utils
     import app.data_integration.pipelines.load_data.load_ecommerce_data
     import app.data_integration.pipelines.load_data.load_marketing_data
-    import app.data_integration.pipelines.utils
+    import app.data_integration.pipelines.e_commerce
 
     pipeline = Pipeline(
-        id='mara_example_project_olist',
-        description='An example pipeline that integrates the Olist ecommerce and marketing funnel datasets')
+        id='mara_example_project_1',
+        description='An example pipeline that integrates the Olist e-commerce and marketing funnel data')
 
     pipeline.add(app.data_integration.pipelines.utils.pipeline)
     pipeline.add(app.data_integration.pipelines.load_data.load_ecommerce_data.pipeline, upstreams=['utils'])
     pipeline.add(app.data_integration.pipelines.load_data.load_marketing_data.pipeline, upstreams=['utils'])
+    pipeline.add(app.data_integration.pipelines.e_commerce.pipeline, upstreams=['load_ecommerce_data'])
     return pipeline
 
 
