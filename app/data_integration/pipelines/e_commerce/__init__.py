@@ -22,74 +22,107 @@ pipeline.add_initial(
          ]))
 
 pipeline.add(
-    Task(id="preprocess_orders",
+    Task(id="preprocess_order",
          description="",
          commands=[
-             ExecuteSQL(sql_file_name="preprocess_orders.sql")
+             ExecuteSQL(sql_file_name="preprocess_order.sql")
          ]))
 
 pipeline.add(
-    Task(id="preprocess_order_items",
+    Task(id="preprocess_order_item",
          description="",
          commands=[
-             ExecuteSQL(sql_file_name="preprocess_order_items.sql")
+             ExecuteSQL(sql_file_name="preprocess_order_item.sql")
+         ]),
+    upstreams=["preprocess_order"])
+
+pipeline.add(
+    Task(id="preprocess_product",
+         description="",
+         commands=[
+             ExecuteSQL(sql_file_name="preprocess_product.sql")
          ]))
 
 pipeline.add(
-    Task(id="preprocess_products",
+    Task(id="preprocess_seller",
          description="",
          commands=[
-             ExecuteSQL(sql_file_name="preprocess_products.sql")
+             ExecuteSQL(sql_file_name="preprocess_seller.sql")
          ]))
 
 pipeline.add(
-    Task(id="preprocess_sellers",
+    Task(id="preprocess_customer",
          description="",
          commands=[
-             ExecuteSQL(sql_file_name="preprocess_sellers.sql")
+             ExecuteSQL(sql_file_name="preprocess_customer.sql")
          ]))
 
 pipeline.add(
-    Task(id="preprocess_customers",
+    Task(id="preprocess_geo_location",
          description="",
          commands=[
-             ExecuteSQL(sql_file_name="preprocess_customers.sql")
-         ]))
+             ExecuteSQL(sql_file_name="preprocess_geo_location.sql")
+         ]),
+    upstreams=["preprocess_seller", "preprocess_customer"])
 
 pipeline.add(
-    Task(id="preprocess_geolocations",
+    Task(id="transform_seller",
          description="",
          commands=[
-             ExecuteSQL(sql_file_name="preprocess_geolocations.sql")
-         ]))
+             ExecuteSQL(sql_file_name="transform_seller.sql")
+         ]),
+    upstreams=["preprocess_geo_location", "preprocess_order_item"])
 
+pipeline.add(
+    Task(id="transform_order",
+         description="",
+         commands=[
+             ExecuteSQL(sql_file_name="transform_order.sql")
+         ]),
+    upstreams=["preprocess_order_item"])
 
-# pipeline.add(
-#     ParallelExecuteSQL(
-#         id="create_repo_activity_data_set",
-#         description="Creates a flat data set table for Github repo activities",
-#         sql_statement="SELECT gh_tmp.insert_repo_activity_data_set(@chunk@::SMALLINT);",
-#         parameter_function=etl_tools.utils.chunk_parameter_function,
-#         parameter_placeholders=["@chunk@"],
-#         commands_before=[
-#             ExecuteSQL(sql_file_name="create_repo_activity_data_set.sql")
-#         ]),
-#     upstreams=["transform_repo_activity"])
-#
-# pipeline.add(
-#     CreateAttributesTable(
-#         id="create_repo_activity_data_set_attributes",
-#         source_schema_name='gh_dim_next',
-#         source_table_name='repo_activity_data_set'),
-#     upstreams=['create_repo_activity_data_set'])
-#
-# pipeline.add(
-#     Task(id="constrain_tables",
-#          description="Adds foreign key constrains between the dim tables",
-#          commands=[
-#              ExecuteSQL(sql_file_name="constrain_tables.sql", echo_queries=False)
-#          ]),
-#     upstreams=["transform_repo_activity"])
+pipeline.add(
+    Task(id="transform_customer",
+         description="",
+         commands=[
+             ExecuteSQL(sql_file_name="transform_customer.sql")
+         ]),
+    upstreams=["preprocess_geo_location", "preprocess_order_item"])
+
+pipeline.add(
+    Task(id="transform_order_item",
+         description="",
+         commands=[
+             ExecuteSQL(sql_file_name="transform_order_item.sql")
+         ]),
+    upstreams=["preprocess_order_item"])
+
+pipeline.add(
+    Task(id="transform_product",
+         description="",
+         commands=[
+             ExecuteSQL(sql_file_name="transform_product.sql")
+         ]),
+    upstreams=["preprocess_product", "preprocess_order_item"])
+
+pipeline.add(
+    Task(id="transform_geo_location",
+         description="",
+         commands=[
+             ExecuteSQL(sql_file_name="transform_geo_location.sql")
+         ]),
+    upstreams=["preprocess_geo_location"])
+
+pipeline.add(
+    Task(id="constrain_tables",
+         description="Adds foreign key constrains between the dim tables",
+         commands=[
+             ExecuteSQL(sql_file_name="constrain_tables.sql", echo_queries=False)
+         ]),
+    upstreams=["transform_seller",
+               "transform_customer",
+               "transform_order_item",
+               "transform_order"])
 
 pipeline.add_final(
     Task(id="replace_schema",
